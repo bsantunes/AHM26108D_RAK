@@ -61,3 +61,80 @@ Add:
 obj-$(CONFIG_WLAN_VENDOR_MORSE) += morse/
 ```
 This instructs the kernel to build the `morse/` directory if `CONFIG_WLAN_VENDOR_MORSE` is enabled.
+## 5. Configure the Kernel with Morse Options
+Add the required configuration options to the kernel’s `.config` file.
+Option 1: Use `menuconfig`:
+Run:
+```
+cd $WORKING_DIR
+cd linux
+make menuconfig
+```
+Navigate to:
+
+`Device Drivers -> Network device support -> Wireless LAN`
+
+Enable:
+
+`Morse Micro wireless LAN support` as `M` (module) for `CONFIG_WLAN_VENDOR_MORSE=m`.
+
+`Morse Micro SDIO support` for `CONFIG_MORSE_SDIO=y`.
+
+`Morse Micro user access support` for `CONFIG_MORSE_USER_ACCESS=y`.
+
+`Morse Micro vendor command support` for `CONFIG_MORSE_VENDOR_COMMAND=y`. Ensure dependencies are enabled:
+
+`Wireless LAN` -> `cfg80211` (`CONFIG_CFG80211=m` or `y`).
+
+`Wireless LAN` -> `Generic IEEE 802.11 Networking Stack` `(mac80211)` (`CONFIG_MAC80211=m` or `y`). Save and exit.
+
+Option 2: Manually edit `.config`:
+```
+cd $WORKING_DIR
+cd linux
+vi .config
+```
+Add or modify:
+```
+CONFIG_WLAN_VENDOR_MORSE=m
+CONFIG_MORSE_SDIO=y
+CONFIG_MORSE_USER_ACCESS=y
+CONFIG_MORSE_VENDOR_COMMAND=y
+CONFIG_CFG80211=m
+CONFIG_MAC80211=m
+```
+Save and exit.
+## 6. Apply Kernel Patches
+```
+cd $WORKING_DIR
+curl -L -O https://github.com/bsantunes/AHM26108D_RAK/raw/refs/heads/main/morsemicro_kernel_patches_rel_1_12_4_2024_Jun_11.zip
+unzip morsemicro_kernel_patches_rel_1_12_4_2024_Jun_11.zip
+curl -L -O https://raw.githubusercontent.com/bsantunes/AHM26108D_RAK/refs/heads/main/0010-sdio_18v_quirk.patch
+cp 0010-sdio_18v_quirk.patch  morsemicro_kernel_patches_rel_1_12_4_2024_Jun_11/6.6.x/0010-sdio_18v_quirk.patch 
+cat morsemicro_kernel_patches_rel_1_12_4_2024_Jun_11/6.6.x/*.patch | patch -g0 -p1 -E -d linux/
+mkdir patches
+cd patches
+curl -L -O https://raw.githubusercontent.com/bsantunes/AHM26108D_RAK/refs/heads/main/debug.h.patch
+curl -L -O https://raw.githubusercontent.com/bsantunes/AHM26108D_RAK/refs/heads/main/firmware.h.patch
+curl -L -O https://raw.githubusercontent.com/bsantunes/AHM26108D_RAK/refs/heads/main/morse.h.patch
+cd ..
+patch -p1 < patches/debug.h.patch
+patch -p1 < patches/firmware.h.patch
+patch -p1 < patches/morse.h.patch
+curl -L -O https://raw.githubusercontent.com/bsantunes/AHM26108D_RAK/refs/heads/main/morse_types.h
+cp morse_types.h linux/drivers/net/wireless/morse/
+```
+## 7. Build the Kernel and Driver
+Build the modules and kernel:
+```
+cd $WORKING_DIR
+cd linux
+make -j$(nproc)
+sudo make modules_install
+sudo make install
+```
+Update the bootloader (e.g., GRUB) and reboot if you updated the kernel:
+```
+sudo update-grub
+sudo reboot
+```
