@@ -8,14 +8,14 @@ WORKING_DIR="/home/rak"
 cd $WORKING_DIR
 git clone --depth=1 --branch rpi-6.6.y https://github.com/raspberrypi/linux
 cd linux
-make -j4 KERNEL=kernel8 bcm2711_defconfig
+make -j$(nproc) KERNEL=kernel8 bcm2711_defconfig
 ```
 Now, you can customise what features you want in your kernel. Do this by running:
 ```
 cd $WORKING_DIR
 cd linux
 vi .config # Enable CONFIG_CRYPTO_CCM=y and CONFIG_CRYPTO_GCM=y
-make -j4 KERNEL=kernel8 menuconfig  # Add options as needed
+make -j$(nproc) KERNEL=kernel8 menuconfig  # Add options as needed
 ```
 
 ## 2. Extract the Morse Micro Driver
