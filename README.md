@@ -109,8 +109,10 @@ Save and exit.
 cd $WORKING_DIR
 curl -L -O https://github.com/bsantunes/AHM26108D_RAK/raw/refs/heads/main/morsemicro_kernel_patches_rel_1_12_4_2024_Jun_11.zip
 unzip morsemicro_kernel_patches_rel_1_12_4_2024_Jun_11.zip
+
 curl -L -O https://raw.githubusercontent.com/bsantunes/AHM26108D_RAK/refs/heads/main/0010-sdio_18v_quirk.patch
-cp 0010-sdio_18v_quirk.patch  morsemicro_kernel_patches_rel_1_12_4_2024_Jun_11/6.6.x/0010-sdio_18v_quirk.patch 
+cp 0010-sdio_18v_quirk.patch  morsemicro_kernel_patches_rel_1_12_4_2024_Jun_11/6.6.x/0010-sdio_18v_quirk.patch
+
 cat morsemicro_kernel_patches_rel_1_12_4_2024_Jun_11/6.6.x/*.patch | patch -g0 -p1 -E -d linux/
 mkdir patches
 cd patches
