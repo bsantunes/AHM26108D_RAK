@@ -37,3 +37,4 @@ index 962b3f4b3d7d..01ce5eb7eaff 100644
 +#define MMC_QUIRK_NO_18V	(1<<18)	/* Ignore voltage negotiation and don't use 1.8v */
  #define MMC_QUIRK_WORKING_SD_CQ	(1<<30)		/* SD card has known-good CQ implementation */
  #define MMC_QUIRK_ERASE_BROKEN	(1<<31)		/* Skip erase */
+
