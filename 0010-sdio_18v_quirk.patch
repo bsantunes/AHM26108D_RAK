@@ -1,0 +1,39 @@
+diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
+index 702ee6de152e..3bc207cc1ffa 100644
+--- a/drivers/mmc/core/quirks.h
++++ b/drivers/mmc/core/quirks.h
+@@ -191,6 +191,10 @@ static const struct mmc_fixup __maybe_unused sdio_card_init_methods[] = {
+ 			      MMC_QUIRK_BROKEN_BYTE_MODE_512 |
+ 			      MMC_QUIRK_LENIENT_FN0 |
+ 			      MMC_QUIRK_BLKSZ_FOR_BYTE_MODE),
++	
++	SDIO_FIXUP_COMPATIBLE("morse,mm6104", add_quirk, MMC_QUIRK_NO_18V),
++
++	SDIO_FIXUP_COMPATIBLE("morse,mm6108", add_quirk, MMC_QUIRK_NO_18V),
+ 
+ 	END_FIXUP
+ };
+diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
+index 5914516df2f7..eff83e91ecbe 100644
+--- a/drivers/mmc/core/sdio.c
++++ b/drivers/mmc/core/sdio.c
+@@ -737,7 +737,7 @@ static int mmc_sdio_init_card(struct mmc_host *host, u32 ocr,
+ 	 * try to init uhs card. sdio_read_cccr will take over this task
+ 	 * to make sure which speed mode should work.
+ 	 */
+-	if (rocr & ocr & R4_18V_PRESENT) {
++	if ((rocr & ocr & R4_18V_PRESENT)  && !(card->quirks & MMC_QUIRK_NO_18V)) {
+ 		err = mmc_set_uhs_voltage(host, ocr_card);
+ 		if (err == -EAGAIN) {
+ 			mmc_sdio_pre_init(host, ocr_card, card);
+diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
+index 962b3f4b3d7d..01ce5eb7eaff 100644
+--- a/include/linux/mmc/card.h
++++ b/include/linux/mmc/card.h
+@@ -295,6 +295,7 @@ struct mmc_card {
+ #define MMC_QUIRK_BROKEN_HPI    (1<<13)         /* Disable broken HPI support */
+ #define MMC_QUIRK_BROKEN_SD_DISCARD     (1<<14) /* Disable broken SD discard support */
+ #define MMC_QUIRK_BROKEN_SD_CACHE	(1<<15)	/* Disable broken SD cache support */
++#define MMC_QUIRK_NO_18V	(1<<18)	/* Ignore voltage negotiation and don't use 1.8v */
+ #define MMC_QUIRK_WORKING_SD_CQ	(1<<30)		/* SD card has known-good CQ implementation */
+ #define MMC_QUIRK_ERASE_BROKEN	(1<<31)		/* Skip erase */
