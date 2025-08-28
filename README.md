@@ -114,6 +114,8 @@ curl -L -O https://raw.githubusercontent.com/bsantunes/AHM26108D_RAK/refs/heads/
 cp 0010-sdio_18v_quirk.patch  morsemicro_kernel_patches_rel_1_12_4_2024_Jun_11/6.6.x/0010-sdio_18v_quirk.patch
 
 cat morsemicro_kernel_patches_rel_1_12_4_2024_Jun_11/6.6.x/*.patch | patch -g0 -p1 -E -d linux/
+
+
 mkdir patches
 cd patches
 curl -L -O https://raw.githubusercontent.com/bsantunes/AHM26108D_RAK/refs/heads/main/debug.h.patch
@@ -131,12 +133,16 @@ Build the modules and kernel:
 ```
 cd $WORKING_DIR
 cd linux
-make -j$(nproc)
-sudo make modules_install
-sudo make install
+make -j$(nproc) KERNEL=kernel8 Image.gz modules dtbs
 ```
-Update the bootloader (e.g., GRUB) and reboot if you updated the kernel:
+Install the kernel
 ```
-sudo update-grub
-sudo reboot
+cd $WORKING_DIR
+cd linux
+sudo make -j$(nproc) KERNEL=kernel8 modules_install
+cp /boot/firmware/$KERNEL.img /boot/firmware/$KERNEL-backup.img
+cp arch/arm64/boot/Image.gz /boot/firmware/$KERNEL.img
+cp arch/arm64/boot/dts/broadcom/*.dtb /boot/firmware/
+cp arch/arm64/boot/dts/overlays/*.dtb* /boot/firmware/overlays/
+cp arch/arm64/boot/dts/overlays/README /boot/firmware/overlays/
 ```
