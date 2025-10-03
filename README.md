@@ -1,5 +1,5 @@
 # AHM26108D
-Compiling instructions for kernel and driver on RAK 7391
+Compiling instructions for kernel and driver on RAK 7391 with CM5
 
 ## 1. Prepare and configure the Kernel Source
 Clone and checkout kernel 6.6:
@@ -10,6 +10,7 @@ sudo apt install git bc bison flex libssl-dev make
 git clone --depth=1 --branch rpi-6.6.y https://github.com/raspberrypi/linux
 cd linux
 make -j$(nproc) KERNEL=kernel8 bcm2711_defconfig
+make -j$(nproc) KERNEL=kernel_2712 bcm2712_defconfig
 ```
 Now, you can customise what features you want in your kernel. Do this by running:
 ```
