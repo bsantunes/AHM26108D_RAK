@@ -6,6 +6,7 @@ Clone and checkout kernel 6.6:
 ```
 WORKING_DIR="/home/rak"
 cd $WORKING_DIR
+sudo apt install git
 git clone --depth=1 --branch rpi-6.6.y https://github.com/raspberrypi/linux
 cd linux
 make -j$(nproc) KERNEL=kernel8 bcm2711_defconfig
