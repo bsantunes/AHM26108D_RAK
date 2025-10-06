@@ -156,9 +156,11 @@ cd $WORKING_DIR
 cd linux
 sudo make -j$(nproc) KERNEL=kernel8 modules_install
 sudo make -j$(nproc) KERNEL=kernel_2712 modules_install
-cp /boot/firmware/$KERNEL.img /boot/firmware/$KERNEL-backup.img
-cp arch/arm64/boot/Image.gz /boot/firmware/$KERNEL.img
-cp arch/arm64/boot/dts/broadcom/*.dtb /boot/firmware/
-cp arch/arm64/boot/dts/overlays/*.dtb* /boot/firmware/overlays/
-cp arch/arm64/boot/dts/overlays/README /boot/firmware/overlays/
+sudo cp /boot/firmware/$KERNEL.img /boot/firmware/$KERNEL-backup.img
+sudo cp arch/arm64/boot/Image.gz /boot/firmware/$KERNEL.img
+sudo cp arch/arm64/boot/dts/broadcom/*.dtb /boot/firmware/
+sudo cp arch/arm64/boot/dts/overlays/*.dtb* /boot/firmware/overlays/
+sudo cp arch/arm64/boot/dts/overlays/README /boot/firmware/overlays/
 ```
+
+sudo reboot
