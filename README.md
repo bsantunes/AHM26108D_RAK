@@ -155,6 +155,7 @@ Install the kernel
 cd $WORKING_DIR
 cd linux
 sudo make -j$(nproc) KERNEL=kernel8 modules_install
+sudo make -j$(nproc) KERNEL=kernel_2712 modules_install
 cp /boot/firmware/$KERNEL.img /boot/firmware/$KERNEL-backup.img
 cp arch/arm64/boot/Image.gz /boot/firmware/$KERNEL.img
 cp arch/arm64/boot/dts/broadcom/*.dtb /boot/firmware/
