@@ -85,11 +85,7 @@ Enable:
 
 `Morse Micro user access support` for `CONFIG_MORSE_USER_ACCESS=y`.
 
-`Morse Micro vendor command support` for `CONFIG_MORSE_VENDOR_COMMAND=y`. Ensure dependencies are enabled:
-
-`Wireless LAN` -> `cfg80211` (`CONFIG_CFG80211=m` or `y`).
-
-`Wireless LAN` -> `Generic IEEE 802.11 Networking Stack` `(mac80211)` (`CONFIG_MAC80211=m` or `y`). Save and exit.
+`Morse Micro vendor command support` for `CONFIG_MORSE_VENDOR_COMMAND=y`. 
 
 Option 2: Manually edit `.config`:
 ```
@@ -106,7 +102,18 @@ CONFIG_MORSE_VENDOR_COMMAND=y
 CONFIG_CFG80211=m
 CONFIG_MAC80211=m
 ```
+
+Ensure wireless dependencies are enabled:
+The Morse driver depends on cfg80211 and mac80211. Ensure these are enabled:
+```
+CONFIG_CFG80211=m
+CONFIG_MAC80211=m
+```
+If they’re set to y (built-in), you may need to set CONFIG_WLAN_VENDOR_MORSE=y instead of m, but m is preferred for modules. Use menuconfig to confirm:
+`Networking support -> Wireless -> cfg80211 - wireless configuration API`
+`Networking support -> Wireless -> Generic IEEE 802.11 Networking Stack (mac80211)`
 Save and exit.
+
 ## 6. Apply Kernel Patches
 ```
 cd $WORKING_DIR
