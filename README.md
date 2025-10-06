@@ -104,14 +104,18 @@ CONFIG_MAC80211=m
 ```
 
 Ensure wireless dependencies are enabled:
+
 The Morse driver depends on cfg80211 and mac80211. Ensure these are enabled:
 ```
 CONFIG_CFG80211=m
 CONFIG_MAC80211=m
 ```
 If they’re set to y (built-in), you may need to set CONFIG_WLAN_VENDOR_MORSE=y instead of m, but m is preferred for modules. Use menuconfig to confirm:
+
 `Networking support -> Wireless -> cfg80211 - wireless configuration API`
+
 `Networking support -> Wireless -> Generic IEEE 802.11 Networking Stack (mac80211)`
+
 Save and exit.
 
 ## 6. Apply Kernel Patches
