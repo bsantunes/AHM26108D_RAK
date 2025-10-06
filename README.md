@@ -147,7 +147,8 @@ Build the modules and kernel:
 ```
 cd $WORKING_DIR
 cd linux
-make -j$(nproc) KERNEL=kernel8 Image.gz modules dtbs
+make -j$(nproc) KERNEL=kernel8 Image.gz modules dtbs # CM4
+make -j$(nproc) KERNEL=kernel_2712 Image.gz modules dtbs # CM5
 ```
 Install the kernel
 ```
