@@ -186,13 +186,14 @@ Download and run wifi-connect script
 ```
 curl -L -O https://raw.githubusercontent.com/bsantunes/MM6108_RPi5_CM5/refs/heads/main/wifi-connect.sh
 chmod +x wifi-connect.sh
-curl -L -O https://raw.githubusercontent.com/bsantunes/MM6108_RPi5_CM5/refs/heads/main/wpa_supplicant_us.conf
-./wifi-connect.sh wlan1 wpa_supplicant_us.conf
+curl -L -O https://raw.githubusercontent.com/bsantunes/MM6108_RPi5_CM5/refs/heads/main/wpa_supplicant_eu.conf
+./wifi-connect.sh wlan1 wpa_supplicant_eu.conf
 ```
+or use US regulatory domain
 
 ```
 curl -L -O https://raw.githubusercontent.com/bsantunes/MM6108_RPi5_CM5/refs/heads/main/wifi-connect.sh
 chmod +x wifi-connect.sh
-curl -L -O https://raw.githubusercontent.com/bsantunes/MM6108_RPi5_CM5/refs/heads/main/wpa_supplicant_eu.conf
-./wifi-connect.sh wlan1 wpa_supplicant_eu.conf
+curl -L -O https://raw.githubusercontent.com/bsantunes/MM6108_RPi5_CM5/refs/heads/main/wpa_supplicant_us.conf
+./wifi-connect.sh wlan1 wpa_supplicant_us.conf
 ```
