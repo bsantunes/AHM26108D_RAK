@@ -67,7 +67,7 @@ This instructs the kernel to build the `morse/` directory if `CONFIG_WLAN_VENDOR
 ## 5. Configure the Kernel with Morse Options
 Add the required configuration options to the kernel’s `.config` file.
 
-* Option 1: Use `menuconfig`:
+**Option 1:** Use `menuconfig`:
 Run:
 ```
 cd $WORKING_DIR
@@ -88,7 +88,7 @@ Enable:
 
 `Morse Micro vendor command support` for `CONFIG_MORSE_VENDOR_COMMAND=y`. 
 
-* Option 2: Manually edit `.config`:
+**Option 2:** Manually edit `.config`:
 ```
 cd $WORKING_DIR
 cd linux
