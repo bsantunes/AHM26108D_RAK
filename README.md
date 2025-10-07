@@ -164,12 +164,14 @@ sudo cp arch/arm64/boot/dts/overlays/*.dtb* /boot/firmware/overlays/
 sudo cp arch/arm64/boot/dts/overlays/README /boot/firmware/overlays/
 ```
 
-sudo reboot
+Now reboot the board
 
 ## 8. Install Morse Micro tools
-Download
+Download and run the deb install script
+
 ```
-"install_deb_morse.sh"
+cd $WORKING_DIR
+curl -L -O https://raw.githubusercontent.com/bsantunes/MM6108_RPi5_CM5/refs/heads/main/install_deb_morse.sh
 chmod +x install_deb_morse.sh
 ./install_deb_morse.sh
 ```
