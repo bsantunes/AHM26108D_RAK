@@ -104,9 +104,9 @@ CONFIG_CFG80211=m
 CONFIG_MAC80211=m
 ```
 
-Finally, ensure wireless dependencies are enabled:
+Finally, ensure wireless dependencies are enabled sincet the Morse driver depends on cfg80211 and mac80211.
 
-The Morse driver depends on cfg80211 and mac80211. Ensure these are enabled:
+Ensure these are enabled:
 ```
 CONFIG_CFG80211=m
 CONFIG_MAC80211=m
