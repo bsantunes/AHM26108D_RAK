@@ -175,3 +175,12 @@ curl -L -O https://raw.githubusercontent.com/bsantunes/MM6108_RPi5_CM5/refs/head
 chmod +x install_deb_morse.sh
 ./install_deb_morse.sh
 ```
+
+## 9. Run wpa_supplicant_s1g
+Download and run wifi-connect script
+```
+curl -L -O https://raw.githubusercontent.com/bsantunes/MM6108_RPi5_CM5/refs/heads/main/wifi-connect.sh
+curl -L -O https://raw.githubusercontent.com/bsantunes/MM6108_RPi5_CM5/refs/heads/main/wpa_supplicant_us.conf
+chmod +x wifi-connect
+./wifi-connect wlan1 wpa_supplicant_us.conf
+```
