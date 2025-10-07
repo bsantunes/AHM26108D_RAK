@@ -23,7 +23,7 @@ make -j$(nproc) KERNEL=kernel_2712 menuconfig # CM5 Add options as needed
 Extract the driver archive:
 ```
 cd $WORKING_DIR
-curl -L -O https://github.com/bsantunes/AHM26108D_RAK/raw/refs/heads/main/morsemicro_driver_rel_1_12_4_2024_Jun_11.zip
+curl -L -O https://github.com/bsantunes/MM6108_RPi5_CM5/raw/refs/heads/main/morsemicro_driver_rel_1_12_4_2024_Jun_11.zip
 unzip morsemicro_driver_rel_1_12_4_2024_Jun_11.zip
 ```
 
@@ -123,7 +123,7 @@ Save and exit.
 ## 6. Apply Kernel Patches
 ```
 cd $WORKING_DIR
-curl -L -O https://github.com/bsantunes/AHM26108D_RAK/raw/refs/heads/main/morsemicro_kernel_patches_rel_1_12_4_2024_Jun_11.zip
+curl -L -O https://github.com/bsantunes/MM6108_RPi5_CM5/raw/refs/heads/main/morsemicro_kernel_patches_rel_1_12_4_2024_Jun_11.zip
 unzip morsemicro_kernel_patches_rel_1_12_4_2024_Jun_11.zip
 
 curl -L -O https://raw.githubusercontent.com/bsantunes/AHM26108D_RAK/refs/heads/main/0010-sdio_18v_quirk.patch
@@ -167,3 +167,9 @@ sudo cp arch/arm64/boot/dts/overlays/README /boot/firmware/overlays/
 sudo reboot
 
 ## 8. Install Morse Micro tools
+Download
+```
+"install_deb_morse.sh"
+chmod +x install_deb_morse.sh
+./install_deb_morse.sh
+```
