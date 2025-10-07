@@ -141,9 +141,7 @@ Save and exit.
 cd $WORKING_DIR
 curl -L -O https://github.com/bsantunes/MM6108_RPi5_CM5/raw/refs/heads/main/Patches_6.6.x.zip
 unzip Patches_6.6.x.zip
-
 cat 6.6.x/*.patch | patch -g0 -p1 -E -d linux/
-
 ```
 
 ## 7. Build the Kernel and Driver
@@ -154,6 +152,7 @@ cd $WORKING_DIR
 cd linux
 make -j$(nproc) KERNEL=kernel_2712 Image.gz modules dtbs
 ```
+
 Install the kernel
 
 ```
