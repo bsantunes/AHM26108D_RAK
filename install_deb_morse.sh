@@ -9,8 +9,6 @@ cd "$WORKDIR"
 # Download .deb packages
 echo "Downloading Morse Micro packages..."
 curl -L https://community.morsemicro.com/uploads/short-url/AiKaaJ4I7N5cIPCu5IshCClDCzz.deb -o mm-overlays_1.12.4-2.deb
-curl -L https://community.morsemicro.com/uploads/short-url/csfRIEM0q8eP17rr2lKHLL0vqnJ.deb -o mm-driver_1.12.4-rpt-rpi-2712.deb
-curl -L https://community.morsemicro.com/uploads/short-url/waCcpbowR0JPcynxGKJ6IBDSQe2.deb -o mm-mac80211_6.6.31-rpt-rpi-2712-1.12.4.deb
 curl -L https://community.morsemicro.com/uploads/short-url/wQm6W2eJSlzOtiAnCGOpCNfoyrB.deb -o mm-wpa-supp_1.12.4-1.deb
 curl -L https://community.morsemicro.com/uploads/short-url/wsZ0etVaTbtfXC9Lz3TGASrhfVb.deb -o mm-morsecli_1.12.4-1.deb
 curl -L https://community.morsemicro.com/uploads/short-url/icdk0vBSEfHNKtL2ewUq3jPPbIv.deb -o mm-hostapd_1.12.4-1.deb
@@ -23,8 +21,6 @@ sudo dpkg -i mm-hostapd_1.12.4-1.deb
 sudo dpkg -i mm-wpa-supp_1.12.4-1.deb
 sudo dpkg -i mm-morsecli_1.12.4-1.deb
 sudo dpkg -i mm-firmware_1.12.4-1.deb
-#sudo dpkg -i mm-mac80211_6.6.31-rpt-rpi-2712-1.12.4.deb
-#sudo dpkg -i mm-driver_1.12.4-rpt-rpi-2712.deb
 sudo dpkg -i mm-overlays_1.12.4-2.deb
 
 # Fix dependencies if needed
