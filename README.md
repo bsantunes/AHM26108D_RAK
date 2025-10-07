@@ -1,5 +1,5 @@
-# AHM26108D
-Compiling instructions for kernel and driver on RAK 7391 with CM5
+# Morse Micro 6108 
+Compiling instructions for kernel, MM6108 driver and patches with CM5 or RPi5
 
 ## 1. Prepare and configure the Kernel Source
 Clone and checkout kernel 6.6:
@@ -9,7 +9,6 @@ cd $WORKING_DIR
 sudo apt install git bc bison flex libssl-dev make libncurses-dev
 git clone --depth=1 --branch rpi-6.6.y https://github.com/raspberrypi/linux
 cd linux
-make -j$(nproc) KERNEL=kernel8 bcm2711_defconfig # CM4
 make -j$(nproc) KERNEL=kernel_2712 bcm2712_defconfig # CM5
 ```
 Now, you can customise what features you want in your kernel. Do this by running:
@@ -17,7 +16,6 @@ Now, you can customise what features you want in your kernel. Do this by running
 cd $WORKING_DIR
 cd linux
 vi .config # Enable CONFIG_CRYPTO_CCM=y and CONFIG_CRYPTO_GCM=y
-make -j$(nproc) KERNEL=kernel8 menuconfig  # CM4 Add options as needed
 make -j$(nproc) KERNEL=kernel_2712 menuconfig # CM5 Add options as needed
 ```
 
@@ -28,6 +26,7 @@ cd $WORKING_DIR
 curl -L -O https://github.com/bsantunes/AHM26108D_RAK/raw/refs/heads/main/morsemicro_driver_rel_1_12_4_2024_Jun_11.zip
 unzip morsemicro_driver_rel_1_12_4_2024_Jun_11.zip
 ```
+
 ## 3. Integrate the Driver into the Kernel Source
 Create the target directory
 ```
@@ -40,6 +39,7 @@ Copy the driver files
 cd $WORKING_DIR
 cp -r morsemicro_driver_rel_1_12_4_2024_Jun_11/* linux/drivers/net/wireless/morse/
 ```
+
 ## 4. Update the Kernel’s Build System
 Modify the `drivers/net/wireless/` directory’s `Kconfig` and `Makefile` to include the Morse driver.
 Edit `drivers/net/wireless/Kconfig`:
@@ -64,6 +64,7 @@ Add:
 obj-$(CONFIG_WLAN_VENDOR_MORSE) += morse/
 ```
 This instructs the kernel to build the `morse/` directory if `CONFIG_WLAN_VENDOR_MORSE` is enabled.
+
 ## 5. Configure the Kernel with Morse Options
 Add the required configuration options to the kernel’s `.config` file.
 
@@ -130,7 +131,6 @@ cp 0010-sdio_18v_quirk.patch  morsemicro_kernel_patches_rel_1_12_4_2024_Jun_11/6
 
 cat morsemicro_kernel_patches_rel_1_12_4_2024_Jun_11/6.6.x/*.patch | patch -g0 -p1 -E -d linux/
 
-
 mkdir patches
 cd patches
 curl -L -O https://raw.githubusercontent.com/bsantunes/AHM26108D_RAK/refs/heads/main/debug.h.patch
@@ -143,12 +143,12 @@ patch -p1 < patches/morse.h.patch
 curl -L -O https://raw.githubusercontent.com/bsantunes/AHM26108D_RAK/refs/heads/main/morse_types.h
 cp morse_types.h linux/drivers/net/wireless/morse/
 ```
+
 ## 7. Build the Kernel and Driver
 Build the modules and kernel:
 ```
 cd $WORKING_DIR
 cd linux
-make -j$(nproc) KERNEL=kernel8 Image.gz modules dtbs # CM4
 make -j$(nproc) KERNEL=kernel_2712 Image.gz modules dtbs # CM5
 ```
 Install the kernel
@@ -165,3 +165,5 @@ sudo cp arch/arm64/boot/dts/overlays/README /boot/firmware/overlays/
 ```
 
 sudo reboot
+
+## 8. Install Morse Micro tools
