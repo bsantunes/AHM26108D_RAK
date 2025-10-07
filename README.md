@@ -66,7 +66,8 @@ obj-$(CONFIG_WLAN_VENDOR_MORSE) += morse/
 This instructs the kernel to build the `morse/` directory if `CONFIG_WLAN_VENDOR_MORSE` is enabled.
 ## 5. Configure the Kernel with Morse Options
 Add the required configuration options to the kernel’s `.config` file.
-Option 1: Use `menuconfig`:
+
+* Option 1: Use `menuconfig`:
 Run:
 ```
 cd $WORKING_DIR
@@ -87,7 +88,7 @@ Enable:
 
 `Morse Micro vendor command support` for `CONFIG_MORSE_VENDOR_COMMAND=y`. 
 
-Option 2: Manually edit `.config`:
+* Option 2: Manually edit `.config`:
 ```
 cd $WORKING_DIR
 cd linux
@@ -103,7 +104,7 @@ CONFIG_CFG80211=m
 CONFIG_MAC80211=m
 ```
 
-Ensure wireless dependencies are enabled:
+Finally, ensure wireless dependencies are enabled:
 
 The Morse driver depends on cfg80211 and mac80211. Ensure these are enabled:
 ```
