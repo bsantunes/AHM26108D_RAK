@@ -15,8 +15,10 @@ curl -L https://github.com/bsantunes/MM6108_RPi5_CM5/raw/refs/heads/main/mm-firm
 curl -L https://github.com/bsantunes/MM6108_RPi5_CM5/raw/refs/heads/main/mm-overlays_1.12.4-2.deb -o mm-overlays_1.12.4-2.deb
 
 # Install all .deb packages
-echo "Installing packages..."
+echo "Installing dependencies"
 sudo apt install libnl-3-dev libnl-genl-3-dev libnl-route-3-dev -y 
+
+echo "Installing packages..."
 sudo dpkg -i mm-hostapd_1.12.4-1.deb
 sudo dpkg -i mm-wpa-supp_1.12.4-1.deb
 sudo dpkg -i mm-morsecli_1.12.4-1.deb
