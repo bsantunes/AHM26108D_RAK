@@ -3,7 +3,7 @@
 # Exit if interface or config file is not provided
 if [[ -z "$1" || -z "$2" ]]; then
     echo "Usage: $0 <interface> <config_file>"
-    echo "Example: ./wifi-connect wlan1 wpa_supplicant_us.conf"
+    echo "Example: ./wifi-connect.sh wlan1 wpa_supplicant_us.conf"
     exit 1
 fi
 
