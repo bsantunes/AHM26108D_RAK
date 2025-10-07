@@ -8,11 +8,11 @@ cd "$WORKDIR"
 
 # Download .deb packages
 echo "Downloading Morse Micro packages..."
-curl -L https://community.morsemicro.com/uploads/short-url/AiKaaJ4I7N5cIPCu5IshCClDCzz.deb -o mm-overlays_1.12.4-2.deb
-curl -L https://community.morsemicro.com/uploads/short-url/wQm6W2eJSlzOtiAnCGOpCNfoyrB.deb -o mm-wpa-supp_1.12.4-1.deb
-curl -L https://community.morsemicro.com/uploads/short-url/wsZ0etVaTbtfXC9Lz3TGASrhfVb.deb -o mm-morsecli_1.12.4-1.deb
-curl -L https://community.morsemicro.com/uploads/short-url/icdk0vBSEfHNKtL2ewUq3jPPbIv.deb -o mm-hostapd_1.12.4-1.deb
-curl -L https://community.morsemicro.com/uploads/short-url/2pndoejRngT2z1oVaPUI3stwyja.deb -o mm-firmware_1.12.4-1.deb
+curl -L https://github.com/bsantunes/MM6108_RPi5_CM5/raw/refs/heads/main/mm-hostapd_1.12.4-1.deb -o mm-hostapd_1.12.4-1.deb
+curl -L https://github.com/bsantunes/MM6108_RPi5_CM5/raw/refs/heads/main/mm-wpa-supp_1.12.4-1.deb -o mm-wpa-supp_1.12.4-1.deb
+curl -L https://github.com/bsantunes/MM6108_RPi5_CM5/raw/refs/heads/main/mm-morsecli_1.12.4-1.deb -o mm-morsecli_1.12.4-1.deb
+curl -L https://github.com/bsantunes/MM6108_RPi5_CM5/raw/refs/heads/main/mm-firmware_1.12.4-1.deb -o mm-firmware_1.12.4-1.deb
+curl -L https://github.com/bsantunes/MM6108_RPi5_CM5/raw/refs/heads/main/mm-overlays_1.12.4-2.deb -o mm-overlays_1.12.4-2.deb
 
 # Install all .deb packages
 echo "Installing packages..."
