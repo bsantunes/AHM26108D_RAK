@@ -1,26 +1,31 @@
-# Morse Micro 6108 
+# Morse Micro 6108
 Compiling instructions for kernel, MM6108 driver and patches with CM5 or RPi5
 
 ## 1. Prepare and configure the Kernel Source
+
+Define your woking directory: `WORKING_DIR="/home/rak"`
+
 Clone and checkout kernel 6.6:
+
 ```
-WORKING_DIR="/home/rak"
 cd $WORKING_DIR
-sudo apt install git bc bison flex libssl-dev make libncurses-dev
+sudo apt install git bc bison flex libssl-dev make libncurses-dev -y
 git clone --depth=1 --branch rpi-6.6.y https://github.com/raspberrypi/linux
 cd linux
-make -j$(nproc) KERNEL=kernel_2712 bcm2712_defconfig # CM5
+make -j$(nproc) KERNEL=kernel_2712 bcm2712_defconfig
 ```
 Now, you can customise what features you want in your kernel. Do this by running:
+
 ```
 cd $WORKING_DIR
 cd linux
 vi .config # Enable CONFIG_CRYPTO_CCM=y and CONFIG_CRYPTO_GCM=y
-make -j$(nproc) KERNEL=kernel_2712 menuconfig # CM5 Add options as needed
+make -j$(nproc) KERNEL=kernel_2712 menuconfig
 ```
 
 ## 2. Extract the Morse Micro Driver
 Extract the driver archive:
+
 ```
 cd $WORKING_DIR
 curl -L -O https://github.com/bsantunes/MM6108_RPi5_CM5/raw/refs/heads/main/morsemicro_driver_rel_1_12_4_2024_Jun_11.zip
@@ -29,12 +34,16 @@ unzip morsemicro_driver_rel_1_12_4_2024_Jun_11.zip
 
 ## 3. Integrate the Driver into the Kernel Source
 Create the target directory
+
+
 ```
 cd $WORKING_DIR
 cd linux
 mkdir -p drivers/net/wireless/morse
 ```
+
 Copy the driver files
+
 ```
 cd $WORKING_DIR
 cp -r morsemicro_driver_rel_1_12_4_2024_Jun_11/* linux/drivers/net/wireless/morse/
@@ -43,23 +52,27 @@ cp -r morsemicro_driver_rel_1_12_4_2024_Jun_11/* linux/drivers/net/wireless/mors
 ## 4. Update the Kernel’s Build System
 Modify the `drivers/net/wireless/` directory’s `Kconfig` and `Makefile` to include the Morse driver.
 Edit `drivers/net/wireless/Kconfig`:
+
 ```
 cd $WORKING_DIR
 cd linux
 vi drivers/net/wireless/Kconfig
 ```
 Add the following line, preferably after other vendor-specific drivers (e.g., `ti`, `qcom`):
+
 ```
 source "drivers/net/wireless/morse/Kconfig"
 ```
 This includes the Morse driver’s `Kconfig` file, which defines `CONFIG_WLAN_VENDOR_MORSE`, `CONFIG_MORSE_SDIO`, etc.
 Edit `drivers/net/wireless/Makefile`:
+
 ```
 cd $WORKING_DIR
 cd linux
 vi drivers/net/wireless/Makefile
 ```
 Add:
+
 ```
 obj-$(CONFIG_WLAN_VENDOR_MORSE) += morse/
 ```
@@ -70,10 +83,11 @@ Add the required configuration options to the kernel’s `.config` file.
 
 **Option 1:** Use `menuconfig`:
 Run:
+
 ```
 cd $WORKING_DIR
 cd linux
-make menuconfig
+make -j$(nproc) KERNEL=kernel_2712 menuconfig
 ```
 Navigate to:
 
@@ -90,12 +104,14 @@ Enable:
 `Morse Micro vendor command support` for `CONFIG_MORSE_VENDOR_COMMAND=y`. 
 
 **Option 2:** Manually edit `.config`:
+
 ```
 cd $WORKING_DIR
 cd linux
 vi .config
 ```
 Add or modify:
+
 ```
 CONFIG_WLAN_VENDOR_MORSE=m
 CONFIG_MORSE_SDIO=y
@@ -123,40 +139,28 @@ Save and exit.
 ## 6. Apply Kernel Patches
 ```
 cd $WORKING_DIR
-curl -L -O https://github.com/bsantunes/MM6108_RPi5_CM5/raw/refs/heads/main/morsemicro_kernel_patches_rel_1_12_4_2024_Jun_11.zip
-unzip morsemicro_kernel_patches_rel_1_12_4_2024_Jun_11.zip
+curl -L -O https://github.com/bsantunes/MM6108_RPi5_CM5/raw/refs/heads/main/Patches_6.6.x.zip
+unzip Patches_6.6.x.zip
 
-curl -L -O https://raw.githubusercontent.com/bsantunes/AHM26108D_RAK/refs/heads/main/0010-sdio_18v_quirk.patch
-cp 0010-sdio_18v_quirk.patch  morsemicro_kernel_patches_rel_1_12_4_2024_Jun_11/6.6.x/0010-sdio_18v_quirk.patch
+cat 6.6.x/*.patch | patch -g0 -p1 -E -d linux/
 
-cat morsemicro_kernel_patches_rel_1_12_4_2024_Jun_11/6.6.x/*.patch | patch -g0 -p1 -E -d linux/
-
-mkdir patches
-cd patches
-curl -L -O https://raw.githubusercontent.com/bsantunes/AHM26108D_RAK/refs/heads/main/debug.h.patch
-curl -L -O https://raw.githubusercontent.com/bsantunes/AHM26108D_RAK/refs/heads/main/firmware.h.patch
-curl -L -O https://raw.githubusercontent.com/bsantunes/AHM26108D_RAK/refs/heads/main/morse.h.patch
-cd ..
-patch -p1 < patches/debug.h.patch
-patch -p1 < patches/firmware.h.patch
-patch -p1 < patches/morse.h.patch
-curl -L -O https://raw.githubusercontent.com/bsantunes/AHM26108D_RAK/refs/heads/main/morse_types.h
-cp morse_types.h linux/drivers/net/wireless/morse/
 ```
 
 ## 7. Build the Kernel and Driver
 Build the modules and kernel:
+
 ```
 cd $WORKING_DIR
 cd linux
-make -j$(nproc) KERNEL=kernel_2712 Image.gz modules dtbs # CM5
+make -j$(nproc) KERNEL=kernel_2712 Image.gz modules dtbs
 ```
 Install the kernel
+
 ```
 cd $WORKING_DIR
 cd linux
-sudo make -j$(nproc) KERNEL=kernel8 modules_install
 sudo make -j$(nproc) KERNEL=kernel_2712 modules_install
+KERNEL=kernel_2712
 sudo cp /boot/firmware/$KERNEL.img /boot/firmware/$KERNEL-backup.img
 sudo cp arch/arm64/boot/Image.gz /boot/firmware/$KERNEL.img
 sudo cp arch/arm64/boot/dts/broadcom/*.dtb /boot/firmware/
@@ -176,11 +180,19 @@ chmod +x install_deb_morse.sh
 ./install_deb_morse.sh
 ```
 
-## 9. Run wpa_supplicant_s1g
+## 9. Run wpa\_supplicant\_s1g
 Download and run wifi-connect script
+
 ```
 curl -L -O https://raw.githubusercontent.com/bsantunes/MM6108_RPi5_CM5/refs/heads/main/wifi-connect.sh
+chmod +x wifi-connect.sh
 curl -L -O https://raw.githubusercontent.com/bsantunes/MM6108_RPi5_CM5/refs/heads/main/wpa_supplicant_us.conf
-chmod +x wifi-connect
-./wifi-connect wlan1 wpa_supplicant_us.conf
+./wifi-connect.sh wlan1 wpa_supplicant_us.conf
+```
+
+```
+curl -L -O https://raw.githubusercontent.com/bsantunes/MM6108_RPi5_CM5/refs/heads/main/wifi-connect.sh
+chmod +x wifi-connect.sh
+curl -L -O https://raw.githubusercontent.com/bsantunes/MM6108_RPi5_CM5/refs/heads/main/wpa_supplicant_eu.conf
+./wifi-connect.sh wlan1 wpa_supplicant_eu.conf
 ```
